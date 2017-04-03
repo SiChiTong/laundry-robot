@@ -21,12 +21,12 @@ void Robot::stepObstacleAvoidance() {
   // act on detection
   if (detectType == LEFT_DETECT) {
     // half speed, right turn
-    omega = PI;
+    float omega = PI;
     targetVelocityRight = (-omega*wheelAxelLength)/(2*wheelRadius);
     targetVelocityLeft = (omega*wheelAxelLength)/(2*wheelRadius);
   } else if (detectType == RIGHT_DETECT) {
     // half speed, left turn
-    omega = -PI;
+    float omega = -PI;
     targetVelocityRight = (-omega*wheelAxelLength)/(2*wheelRadius);
     targetVelocityLeft = (omega*wheelAxelLength)/(2*wheelRadius);
   } else if (detectType == FORWARD_DETECT) {

@@ -7,7 +7,7 @@ void Robot::stepBumpers() {
   int distanceLeft = sensorLeft.getPreviousRead();
   int distanceRight = sensorRight.getPreviousRead();
   int distanceForward = sensorForward.getPreviousRead();
-  
+
   if (distanceForward < 5 || distanceLeft < 5 || distanceRight < 5) {
     runBumperProgram = true;
     bumperProgramStep = 1;
@@ -26,15 +26,15 @@ void Robot::stepBumpers() {
       }
     } else if (bumperProgramStep == 2) {
       if (distanceRight > distanceLeft + 5) {
-        omega = PI;
+        float omega = PI;
         targetVelocityRight = (-omega*wheelAxelLength)/(2*wheelRadius);
         targetVelocityLeft = (omega*wheelAxelLength)/(2*wheelRadius);
       } else if (distanceLeft > distanceRight + 5) {
-        omega = -PI;
+        float omega = -PI;
         targetVelocityRight = (-omega*wheelAxelLength)/(2*wheelRadius);
         targetVelocityLeft = (omega*wheelAxelLength)/(2*wheelRadius);
       } else {
-        omega = PI;
+        float omega = PI;
         targetVelocityRight = (-omega*wheelAxelLength)/(2*wheelRadius);
         targetVelocityLeft = (omega*wheelAxelLength)/(2*wheelRadius);
       }

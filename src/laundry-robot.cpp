@@ -1,7 +1,9 @@
 #include <Arduino.h>
 
-#include "globals.cpp"
+#include "globals.h"
 #include "robot/robot.h"
+
+Robot robot;
 
 void setup() {
   Serial.begin(9600);

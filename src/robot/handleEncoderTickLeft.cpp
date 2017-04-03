@@ -1,4 +1,4 @@
-#include "globals.cpp"
+#include "globals.h"
 #include "robot/robot.h"
 
 static void Robot::handleEncoderTickLeft() {

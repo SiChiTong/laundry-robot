@@ -13,7 +13,7 @@ class WaypointSet {
     int getWaypointCount();
     void reset();
     bool step(float, float);
-    bool isComplete();
+    bool isComplete(float, float);
     float getThetaDesired(float, float);
     float getErrorDistance(float, float);
 

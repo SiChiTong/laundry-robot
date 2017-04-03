@@ -64,12 +64,10 @@ void Robot::stepRemote() {
       case 0xFF42BD: // * -> toggle autonomous/manual mode
         if (autonomousMode == false ) {
           autonomousMode = true;
-          x = 0;
-          y = 0;
-          theta = 0;
-          waypointSet.reset();
+          Serial.println("Switched to autonomous mode");
         } else {
           autonomousMode = false;
+          Serial.println("Switched to manual mode");
         }
         break;
       case 0xFFFFFFFF: // repeat previous command
@@ -78,9 +76,6 @@ void Robot::stepRemote() {
       default:
         Serial.print("Could not read IR command: ");
         Serial.println(results.value, HEX);
-        autonomousMode = false;
-        manualPwmLeft = 0;
-        manualPwmRight = 0;
     }
 
     sensorIR.resume();

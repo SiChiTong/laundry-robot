@@ -45,6 +45,9 @@ float WaypointSet::getErrorDistance(float agentX, float agentY) {
   return currentWaypoint.getErrorDistance(agentX, agentY);
 }
 
-bool WaypointSet::isComplete() {
-  return (index + 1 == count);
+bool WaypointSet::isComplete(float agentX, float agentY) {
+  Waypoint currentWaypoint = waypoints[index];
+  bool isCompleteArray = (index + 1 == count);
+  bool isCompleteWaypoint = currentWaypoint.isComplete(agentX, agentY);
+  return isCompleteArray && isCompleteWaypoint;
 }

@@ -11,6 +11,8 @@ void Robot::stepObstacleBoundaryFollow() {
   int distanceRight = sensorRight.getPreviousRead();
   int distanceForward = sensorForward.getPreviousRead();
 
+  float thetaDesired = waypointSet.getThetaDesired(x, y);
+
   if (abs(thetaDesired - theta) > PI) {
     if (distanceLeft < enterDistance) {
       runWallFollowProgram = true;
@@ -26,13 +28,13 @@ void Robot::stepObstacleBoundaryFollow() {
   if (runWallFollowProgram == true) {
     if (wallFollowProgramStep == 1) {
       if (distanceLeft < enterDistance / 2) {
-        omega = PI / 2;
+        float omega = PI / 2;
         targetVelocityLeft = (2*velocitySlow + omega*wheelAxelLength)/(2*wheelRadius);
         targetVelocityRight = (2*velocitySlow - omega*wheelAxelLength)/(2*wheelRadius);
       } else if (distanceLeft >= enterDistance / 2) {
         wallFollowProgramStep = 2;
       } else if (distanceRight < enterDistance / 2) {
-        omega = -PI / 2;
+        float omega = -PI / 2;
         targetVelocityLeft = (2*velocitySlow + omega*wheelAxelLength)/(2*wheelRadius);
         targetVelocityRight = (2*velocitySlow - omega*wheelAxelLength)/(2*wheelRadius);
       } else if (distanceRight >= enterDistance / 2) {
