@@ -4,7 +4,7 @@ decode_results results;
 int manualStepCount = 0;
 float manualPwmLeft = 0;
 float manualPwmRight = 0;
-float manualPwm = 65;
+float manualPwm = 85;
 void Robot::stepRemote() {
   if (sensorIR.decode(&results)) {
     switch(results.value) {
