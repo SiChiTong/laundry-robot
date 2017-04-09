@@ -1,6 +1,6 @@
 #include "robot/robot.h"
 
-bool runWallFollowProgram = false;
+bool flagObstacleBoundaryFollow = false;
 int wallFollowProgramStep = 0;
 int wallFollowProgramStepCount = -1;
 void Robot::stepObstacleBoundaryFollow() {
@@ -15,17 +15,17 @@ void Robot::stepObstacleBoundaryFollow() {
 
   if (abs(thetaDesired - theta) > PI) {
     if (distanceLeft < enterDistance) {
-      runWallFollowProgram = true;
+      flagObstacleBoundaryFollow = true;
       wallFollowProgramStep = 1;
       wallFollowProgramStepCount = -1;
     } else if (distanceRight < enterDistance) {
-      runWallFollowProgram = true;
+      flagObstacleBoundaryFollow = true;
       wallFollowProgramStep = 1;
       wallFollowProgramStepCount = -1;
     }
   }
 
-  if (runWallFollowProgram == true) {
+  if (flagObstacleBoundaryFollow == true) {
     if (wallFollowProgramStep == 1) {
       if (distanceLeft < enterDistance / 2) {
         float omega = PI / 2;
@@ -46,7 +46,7 @@ void Robot::stepObstacleBoundaryFollow() {
       targetVelocityRight = velocitySlow;
 
       if (wallFollowProgramStepCount >= 20) {
-        runWallFollowProgram = false;
+        flagObstacleBoundaryFollow = false;
         wallFollowProgramStep = 0;
         wallFollowProgramStepCount = -1;
       }

@@ -8,6 +8,7 @@ class SensorUltrasonic {
     int distanceInches;
 
   public:
+    float theta;
     void setUp();
     void initializePins();
     int getPreviousRead();

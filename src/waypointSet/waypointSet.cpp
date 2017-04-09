@@ -3,9 +3,8 @@
 
 WaypointSet::WaypointSet() {
   waypoints[0] = Waypoint(0, 0);
-  waypoints[1] = Waypoint(12, 72);
-  waypoints[2] = Waypoint(-36, 36);
-  waypoints[3] = Waypoint(0, 0);
+  waypoints[1] = Waypoint(0, 60);
+  waypoints[2] = Waypoint(0, 0);
 }
 
 WaypointSet::~WaypointSet() {

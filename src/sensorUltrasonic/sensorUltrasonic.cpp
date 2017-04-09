@@ -5,18 +5,18 @@
 const float tempOfAirCelcius = 23;
 const float speedOfSoundMS = 331.3 + (0.606 * tempOfAirCelcius); // meters per second
 
-SensorUltrasonic::SensorUltrasonic(int triggerPin, int echoPin) {
-  triggerPin = triggerPin;
-  echoPin = echoPin;
+SensorUltrasonic::SensorUltrasonic(int _triggerPin, int _echoPin) {
+  triggerPin = _triggerPin;
+  echoPin = _echoPin;
 }
 
 SensorUltrasonic::~SensorUltrasonic() {
-  
+
 }
 
 void SensorUltrasonic::setUp() {
-  pinMode(this->triggerPin, OUTPUT);
-  pinMode(this->echoPin, INPUT);
+  pinMode(triggerPin, OUTPUT);
+  pinMode(echoPin, INPUT);
 }
 
 int SensorUltrasonic::getPreviousRead() {

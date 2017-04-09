@@ -5,7 +5,7 @@
 class WaypointSet {
   private:
     int index = 0;
-    int count = 4;
+    int count = 3;
     Waypoint* waypoints = new Waypoint[count];
     void next();
 

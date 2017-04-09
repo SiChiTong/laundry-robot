@@ -50,6 +50,7 @@ class Robot {
     PID regulatorMotorLeft = PID(7, 8, 0, DIRECT);
     PID regulatorMotorRight = PID(7, 8, 0, DIRECT);
     PID regulatorNavigationOmega = PID(5, 0.5, 0, DIRECT);
+    PID regulatorObstacleAvoidanceOmega = PID(5, 0.5, 0, DIRECT);
 
     // velocities (ticks per 50 ms)
     float velocityFast = 20;
@@ -59,12 +60,11 @@ class Robot {
     // instance functions
     void setUp();
     void step();
+    void printStats();
 
     // wheel encoder handlers. these have to be static :(
     static void handleEncoderTickLeft();
     static void handleEncoderTickRight();
-
-    void printStats();
 
     // update stats functions that are called toward end of step()
     void updateOdometry();

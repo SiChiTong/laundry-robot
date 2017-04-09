@@ -5,8 +5,8 @@ void Robot::step() {
   waypointSet.step(x, y);
 
   stepNavigation();
-//  stepObstacleBoundaryFollow();
-//  stepObstacleAvoidance();
+  stepObstacleBoundaryFollow();
+  stepObstacleAvoidance();
 //  stepBumpers();
   stepRemote();
   stepMotors();

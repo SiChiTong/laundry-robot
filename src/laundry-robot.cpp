@@ -12,7 +12,7 @@ void setup() {
 
 void loop() {
   robot.printStats();
-  for (int i = 0; i < 25; i++) {
+  for (int i = 0; i < 50; i++) {
     robot.step();
   }
 }
