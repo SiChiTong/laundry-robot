@@ -65,6 +65,7 @@ void Robot::stepRemote() {
         waypointSet.reset();
         autonomousMode = false;
         manualStepCount = 3;
+        flagObstacleAvoidance = false;
         Serial.println("Reset navigation and odometry");
         break;
       case 0xFF42BD: // * -> toggle autonomous/manual mode
@@ -88,16 +89,22 @@ void Robot::stepRemote() {
   }
 
   if (autonomousMode == false) {
-    // regulatorNavigationOmega.Compute(0, 0);
-    // regulatorObstacleAvoidanceOmega.Compute(0, 0);
+    regulatorMotorLeft.Compute(0, 0);
+    regulatorMotorRight.Compute(0, 0);
+    regulatorNavigationOmega.Compute(0, 0);
+    regulatorObstacleAvoidanceOmega.Compute(0, 0);
   }
 
   if (autonomousMode == false && manualStepCount < 3) {
     manualStepCount++;
+    flagRemote = true;
     motorLeft.step(manualPwmLeft);
     motorRight.step(manualPwmRight);
   } else if (autonomousMode == false) {
+    flagRemote = true;
     motorLeft.step(0);
     motorRight.step(0);
+  } else {
+    flagRemote = false;
   }
 }

@@ -1,6 +1,5 @@
 #include "robot/robot.h"
 
-bool runBumperProgram = false;
 int bumperProgramStep = 0;
 int bumperProgramStepCount = -1;
 void Robot::stepBumpers() {
@@ -9,12 +8,12 @@ void Robot::stepBumpers() {
   int distanceForward = sensorForward.getPreviousRead();
 
   if (distanceForward < 5 || distanceLeft < 5 || distanceRight < 5) {
-    runBumperProgram = true;
+    flagBumper = true;
     bumperProgramStep = 1;
     bumperProgramStepCount = -1;
   }
 
-  if (runBumperProgram == true) {
+  if (flagBumper == true) {
     if (bumperProgramStep == 1) {
       targetVelocityLeft = -velocitySlow / 2;
       targetVelocityRight = -velocitySlow / 2;
@@ -43,7 +42,7 @@ void Robot::stepBumpers() {
       if (bumperProgramStepCount >= 20) {
         bumperProgramStep = 0;
         bumperProgramStepCount = -1;
-        runBumperProgram = false;
+        flagBumper = false;
       }
     }
   }

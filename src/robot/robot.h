@@ -1,5 +1,6 @@
 #ifndef ROBOT_H
 #define ROBOT_H
+
 #include <Arduino.h>
 #include "IRremote.h"
 #include "pid/pid.h"
@@ -29,8 +30,18 @@ class Robot {
     float wheelRadius = 2.5; // inches
     float wheelAxelLength = 17; // inches
 
-    // private step functions
     void readSensors();
+
+    // subsystem flags
+    bool flagObstacleBoundaryFollow = false;
+    bool flagObstacleAvoidance = false;
+    bool flagBumper = false;
+    bool flagRemote = false;
+
+    // set flags
+    void setFlagObstacleAvoidance();
+
+    // step subsystems
     void stepNavigation();
     void stepObstacleBoundaryFollow();
     void stepObstacleAvoidance();
@@ -50,12 +61,12 @@ class Robot {
     PID regulatorMotorLeft = PID(7, 8, 0, DIRECT);
     PID regulatorMotorRight = PID(7, 8, 0, DIRECT);
     PID regulatorNavigationOmega = PID(5, 0.5, 0, DIRECT);
-    PID regulatorObstacleAvoidanceOmega = PID(5, 0.5, 0, DIRECT);
+    PID regulatorObstacleAvoidanceOmega = PID(3, 0, 0, DIRECT);
 
     // velocities (ticks per 50 ms)
     float velocityFast = 20;
     float velocityModerate = 15;
-    float velocitySlow = 7;
+    float velocitySlow = 5;
 
     // instance functions
     void setUp();

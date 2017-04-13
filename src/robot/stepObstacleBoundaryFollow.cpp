@@ -1,6 +1,11 @@
+/*
+  1. Estimate section of obstacle using sensors
+  2. Compute vectors tangential to obstacle and perpendicular to obstacle
+  3. Combine two vectors and steer in director of new vector
+*/
+
 #include "robot/robot.h"
 
-bool flagObstacleBoundaryFollow = false;
 int wallFollowProgramStep = 0;
 int wallFollowProgramStepCount = -1;
 void Robot::stepObstacleBoundaryFollow() {

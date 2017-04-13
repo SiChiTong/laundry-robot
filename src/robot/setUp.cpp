@@ -18,7 +18,7 @@ void Robot::setUp() {
 
   regulatorObstacleAvoidanceOmega.SetMode(AUTOMATIC);
   regulatorObstacleAvoidanceOmega.SetSampleTime(25);
-  regulatorObstacleAvoidanceOmega.SetOutputLimits(-6, 6);
+  regulatorObstacleAvoidanceOmega.SetOutputLimits(-3, 3);
 
   sensorLeft.theta = -PI / 4;
   sensorForward.theta = 0;
