@@ -66,6 +66,7 @@ void Robot::stepRemote() {
         autonomousMode = false;
         manualStepCount = 3;
         flagObstacleAvoidance = false;
+        navigationComplete = false;
         Serial.println("Reset navigation and odometry");
         break;
       case 0xFF42BD: // * -> toggle autonomous/manual mode

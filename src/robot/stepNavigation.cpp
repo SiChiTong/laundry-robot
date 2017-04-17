@@ -2,7 +2,12 @@
 
 void Robot::stepNavigation() {
   bool done = waypointSet.isComplete(x, y);
-  if (done == true) {
+  if (navigationComplete == true) {
+    targetVelocityLeft = 0;
+    targetVelocityRight = 0;
+  } else if (done == true) {
+    navigationComplete = true;
+    Serial.println("At final waypoint. Navigation complete.");
     targetVelocityLeft = 0;
     targetVelocityRight = 0;
   } else {
@@ -14,10 +19,10 @@ void Robot::stepNavigation() {
 
     if (abs(errorTheta) > PI) {
       velocity = 0;
-      omega /= 2;
+      omega /= 4;
     } else if (abs(errorTheta) > PI / 2) {
-      velocity /= 2;
-      omega /= 2;
+      velocity /= 4;
+      omega /= 1;
     } else if (errorDistance < 24) {
       velocity /= 2;
     }

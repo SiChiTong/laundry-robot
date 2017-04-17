@@ -2,10 +2,10 @@
 #include "waypointSet/waypointSet.h"
 
 WaypointSet::WaypointSet() {
-  waypoints[0] = Waypoint(0, 0);
-  waypoints[1] = Waypoint(24, 60);
-  waypoints[2] = Waypoint(-24, 60);
-  waypoints[3] = Waypoint(0, 0);
+  waypoints[0] = Waypoint(0*12, 5*12);
+  waypoints[1] = Waypoint(0*12, 5*12);
+  waypoints[2] = Waypoint(0*12, 5*12);
+  waypoints[3] = Waypoint(0*12, 5*12);
 }
 
 WaypointSet::~WaypointSet() {
@@ -18,11 +18,17 @@ void WaypointSet::reset() {
 
 bool WaypointSet::step(float agentX, float agentY) {
   Waypoint currentWaypoint = waypoints[index];
-  bool isComplete = currentWaypoint.isComplete(agentX, agentY);
-  if (isComplete == true) {
+  bool isCurrentWaypointComplete = currentWaypoint.isComplete(agentX, agentY);
+  if (isCurrentWaypointComplete == true) {
+    if (isComplete(agentX, agentY) == false) {
+      Serial.print("Waypoint reached: ");
+      Serial.print(currentWaypoint.getX());
+      Serial.print(", ");
+      Serial.println(currentWaypoint.getY());
+    }
     next();
   }
-  return isComplete;
+  return isCurrentWaypointComplete;
 }
 
 int WaypointSet::getWaypointCount() {

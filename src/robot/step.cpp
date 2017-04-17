@@ -4,17 +4,21 @@ void Robot::step() {
   readSensors();
   waypointSet.step(x, y);
 
+  // default behavior: do nothing
+  targetVelocityLeft = 0;
+  targetVelocityRight = 0;
+
   // set flags
   setFlagObstacleAvoidance();
 
-  targetVelocityLeft = velocitySlow;
-  targetVelocityRight = velocitySlow;
-
   // step subsystems
-  // stepNavigation();
-  // stepObstacleBoundaryFollow();
-  stepObstacleAvoidance();
-  // stepBumpers();
+  if (navigationComplete == false) {
+    stepNavigation();
+    // stepObstacleBoundaryFollow();
+    stepObstacleAvoidance();
+    // stepBumpers();
+  }
+
   // stepLaundryTask();
   stepRemote();
   stepMotors();

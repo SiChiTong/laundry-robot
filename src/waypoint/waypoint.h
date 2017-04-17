@@ -1,6 +1,8 @@
 #ifndef WAYPOINT_H
 #define WAYPOINT_H
 
+#include <Arduino.h>
+
 class Waypoint {
   private:
     float x = 0;

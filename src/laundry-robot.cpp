@@ -11,8 +11,8 @@ void setup() {
 }
 
 void loop() {
-  robot.printStats();
   for (int i = 0; i < 25; i++) {
     robot.step();
   }
+  robot.printStats();
 }

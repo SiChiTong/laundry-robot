@@ -5,25 +5,30 @@
 float thetaDesired = 0;
 int countObstacleAvoidance = 0;
 bool lastFlagObstacleAvoidance = false;
+bool turnLeft = false;
 void Robot::stepObstacleAvoidance() {
-  float distanceThresholdDanger = 6;
-  float distanceThresholdEnter = 12;
-  float distanceThresholdExit = 18;
+  float distanceThresholdDanger = 12;
+  float distanceThresholdEnter = 18;
+  float distanceThresholdExit = 24;
 
+  float distanceLeftLeft = sensorLeftLeft.getPreviousRead();
   float distanceLeft = sensorLeft.getPreviousRead();
   float distanceForward = sensorForward.getPreviousRead();
   float distanceRight = sensorRight.getPreviousRead();
+  float distanceRightRight = sensorRightRight.getPreviousRead();
 
-  float distanceLeast = distanceLeft;
+  float distanceLeast = distanceLeftLeft;
+  if (distanceLeast > distanceLeft) distanceLeast = distanceLeft;
   if (distanceLeast > distanceForward) distanceLeast = distanceForward;
   if (distanceLeast > distanceRight) distanceLeast = distanceRight;
+  if (distanceLeast > distanceRightRight) distanceLeast = distanceRightRight;
 
   if (flagObstacleAvoidance == true && lastFlagObstacleAvoidance == false) {
     // begin obstacle avoidance subsystem
     countObstacleAvoidance = 0;
     thetaDesired = getThetaDesiredAvoidObstacle(theta, distanceThresholdEnter, \
-      sensorLeft, sensorForward, sensorRight);
-    thetaDesired = constrainAngle(thetaDesired);
+      sensorLeftLeft, sensorLeft, sensorForward, sensorRight, sensorRightRight);
+    turnLeft = thetaDesired < 0;
 
     Serial.print("Obstacle avoidance system begin: ");
     Serial.print(thetaDesired);
@@ -40,20 +45,24 @@ void Robot::stepObstacleAvoidance() {
   }
 
   if (flagObstacleAvoidance == true) {
-    float velocity = velocitySlow;
-
     thetaDesired = getThetaDesiredAvoidObstacle(theta, distanceThresholdEnter, \
-      sensorLeft, sensorForward, sensorRight);
-    thetaDesired = constrainAngle(thetaDesired);
-    Serial.println(thetaDesired - theta);
+      sensorLeftLeft, sensorLeft, sensorForward, sensorRight, sensorRightRight);
 
+    // keep turning in one direction
+    // if (turnLeft == false && thetaDesired < 0) thetaDesired += TWO_PI;
+    // else if (turnLeft == true && thetaDesired > 0) thetaDesired -= TWO_PI;
+
+    float velocity = velocitySlow;
     float omega = regulatorObstacleAvoidanceOmega.Compute(theta, thetaDesired);
 
     if (distanceLeast <= distanceThresholdEnter) {
-      float factor = (distanceLeast - distanceThresholdDanger) / (distanceThresholdEnter - distanceThresholdDanger);
-      if (factor < 1) factor = -1;
-      else if (factor > 1) factor = 1;
-      velocity *= factor;
+      float distanceLeastForward = distanceLeft;
+      if (distanceLeastForward > distanceForward) distanceLeastForward = distanceForward;
+      if (distanceLeastForward > distanceRight) distanceLeastForward = distanceRight;
+      // set velocity close to zero as approach danger, negative if below danger
+      velocity *= (distanceLeastForward - distanceThresholdDanger) / (distanceThresholdEnter - distanceThresholdDanger);
+
+      if (distanceLeastForward - distanceThresholdDanger < 0) velocity *= 3;
     }
 
     targetVelocityLeft = (2*velocity + omega*wheelAxelLength)/(2*wheelRadius);

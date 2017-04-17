@@ -1,7 +1,9 @@
 #include "robot/robot.h"
 
 void Robot::readSensors() {
-  sensorForward.readDistanceInches();
+  sensorLeftLeft.readDistanceInches();
   sensorLeft.readDistanceInches();
+  sensorForward.readDistanceInches();
   sensorRight.readDistanceInches();
+  sensorRightRight.readDistanceInches();
 }

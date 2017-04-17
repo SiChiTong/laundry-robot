@@ -1,5 +1,7 @@
 #ifndef WAYPOINTSET_H
 #define WAYPOINTSET_H
+
+#include <Arduino.h>
 #include "waypoint/waypoint.h"
 
 class WaypointSet {

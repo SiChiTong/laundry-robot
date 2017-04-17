@@ -27,12 +27,13 @@ class Robot {
     bool autonomousMode = false;
 
     // robot measurements
-    float wheelRadius = 2.5; // inches
-    float wheelAxelLength = 17; // inches
+    float wheelRadius = 2.83465; // inches
+    float wheelAxelLength = 16; // inches
 
     void readSensors();
 
     // subsystem flags
+    bool navigationComplete = false;
     bool flagObstacleBoundaryFollow = false;
     bool flagObstacleAvoidance = false;
     bool flagBumper = false;
@@ -51,17 +52,19 @@ class Robot {
 
   public:
     IRrecv sensorIR = IRrecv(11);
-    SensorUltrasonic sensorForward = SensorUltrasonic(50, 51);
+    SensorUltrasonic sensorLeftLeft = SensorUltrasonic(45, 44);
     SensorUltrasonic sensorLeft = SensorUltrasonic(53, 52);
+    SensorUltrasonic sensorForward = SensorUltrasonic(50, 51);
     SensorUltrasonic sensorRight = SensorUltrasonic(48, 49);
+    SensorUltrasonic sensorRightRight = SensorUltrasonic(47, 46);
     Motor motorLeft = Motor(2, 24, 25);
     Motor motorRight = Motor(3, 23, 22);
 
-    //PID Regulators
-    PID regulatorMotorLeft = PID(7, 8, 0, DIRECT);
-    PID regulatorMotorRight = PID(7, 8, 0, DIRECT);
-    PID regulatorNavigationOmega = PID(5, 0.5, 0, DIRECT);
-    PID regulatorObstacleAvoidanceOmega = PID(3, 0, 0, DIRECT);
+    // PID Regulators
+    PID regulatorMotorLeft = PID(7, 5, 1, DIRECT);
+    PID regulatorMotorRight = PID(7, 5, 1, DIRECT);
+    PID regulatorNavigationOmega = PID(5, 1, 0.7, DIRECT);
+    PID regulatorObstacleAvoidanceOmega = PID(3, 1, 1, DIRECT);
 
     // velocities (ticks per 50 ms)
     float velocityFast = 20;
