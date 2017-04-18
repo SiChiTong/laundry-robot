@@ -7,74 +7,38 @@ static float getThetaDesiredAvoidObstacle(float _robotTheta, float enterDistance
     robotTheta += TWO_PI;
   }
 
-  float distanceLeftLeft = sensorLeftLeft.getPreviousRead();
-  float distanceLeft = sensorLeft.getPreviousRead();
-  float distanceForward = sensorForward.getPreviousRead();
-  float distanceRight = sensorRight.getPreviousRead();
-  float distanceRightRight = sensorRightRight.getPreviousRead();
+  // create vectors {{ magnitude, direction }}
+  int sensorCount = 5;
+  float vectors[sensorCount][2] = {{0,0},{0,0},{0,0},{0,0},{0,0}};
+  vectors[0][0] = sensorLeftLeft.getPreviousRead();
+  vectors[0][1] = robotTheta + sensorLeftLeft.theta + PI;
+  vectors[1][0] = sensorLeft.getPreviousRead();
+  vectors[1][1] = robotTheta + sensorLeft.theta + PI;
+  vectors[2][0] = sensorForward.getPreviousRead();
+  vectors[2][1] = robotTheta + sensorForward.theta + PI;
+  vectors[3][0] = sensorRight.getPreviousRead();
+  vectors[3][1] = robotTheta + sensorRight.theta + PI;
+  vectors[4][0] = sensorRightRight.getPreviousRead();
+  vectors[4][1] = robotTheta + sensorRightRight.theta + PI;
 
-  // avoidance vectors for each sensor
-  // desired theta is relative, so must add robot's theta
-  float thetaLeftLeft = robotTheta + sensorLeftLeft.theta + PI;
-  float thetaLeft = robotTheta + sensorLeft.theta + PI;
-  float thetaForward = robotTheta + sensorForward.theta + PI;
-  float thetaRight = robotTheta + sensorRight.theta + PI;
-  float thetaRightRight = robotTheta + sensorRightRight.theta + PI;
+  float xSum = 0;
+  float ySum = 0;
 
-  // vote towards sensor theta if no object detected
-  // max sensor distance to keep readings relevant to weighting
-  if (distanceLeftLeft > enterDistance) {
-    thetaLeftLeft += PI;
-    distanceLeftLeft = enterDistance;
+  for (int i = 0; i < sensorCount; i++) {
+    // max out distance and rotate vector by PI
+    // if no object is within range
+    if (vectors[i][0] > enterDistance) {
+      vectors[i][0] = enterDistance;
+      vectors[i][1] -= PI;
+    }
+
+    // set magnitude as inverse
+    vectors[i][0] = 1.0 / vectors[i][0];
+
+    // compute x y coordinates for vectors
+    xSum += vectors[i][0] * cos(vectors[i][1]);
+    ySum += vectors[i][0] * sin(vectors[i][1]);
   }
 
-  if (distanceLeft > enterDistance) {
-    thetaLeft += PI;
-    distanceLeft = enterDistance;
-  }
-
-  if (distanceForward > enterDistance) {
-    thetaForward -= PI;
-    distanceForward = enterDistance;
-  }
-
-  if (distanceRight > enterDistance) {
-    thetaRight -= PI;
-    distanceRight = enterDistance;
-  }
-
-  if (distanceRightRight > enterDistance) {
-    thetaRightRight -= PI;
-    distanceRightRight = enterDistance;
-  }
-
-  // make sure distance > 0, default value of 1
-  float distanceInverseLeftLeft = 1;
-  float distanceInverseLeft = 1;
-  float distanceInverseForward = 1;
-  float distanceInverseRight = 1;
-  float distanceInverseRightRight = 1;
-  if (distanceLeftLeft > 0) distanceInverseLeftLeft = 1.0 / distanceLeftLeft;
-  if (distanceLeft > 0) distanceInverseLeft = 1.0 / distanceLeft;
-  if (distanceForward > 0) distanceInverseForward = 1.0 / distanceForward;
-  if (distanceRight > 0) distanceInverseRight = 1.0 / distanceRight;
-  if (distanceRightRight > 0) distanceInverseRightRight = 1.0 / distanceRightRight;
-  float distanceInverseSum = distanceInverseLeftLeft + distanceInverseLeft + \
-    distanceInverseForward + distanceInverseRight + distanceInverseRightRight;
-
-  float weightLeftLeft = distanceInverseLeftLeft / distanceInverseSum;
-  float weightLeft = distanceInverseLeft / distanceInverseSum;
-  float weightForward = distanceInverseForward / distanceInverseSum;
-  float weightRight = distanceInverseRight / distanceInverseSum;
-  float weightRightRight = distanceInverseRightRight / distanceInverseSum;
-
-  float yHatLeftLeft = thetaLeftLeft * weightLeftLeft;
-  float yHatLeft = thetaLeft * weightLeft;
-  float yHatForward = thetaForward * weightForward;
-  float yHatRight = thetaRight * weightRight;
-  float yHatRightRight = thetaRightRight * weightRightRight;
-
-  float thetaDesired = yHatLeftLeft + yHatLeft + yHatForward + yHatRight + yHatRightRight;
-  thetaDesired = constrainAngle(thetaDesired);
-  return thetaDesired;
+  return atan2(ySum, xSum);
 }
