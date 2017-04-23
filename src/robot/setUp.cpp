@@ -14,11 +14,15 @@ void Robot::setUp() {
 
   regulatorNavigationOmega.SetMode(AUTOMATIC);
   regulatorNavigationOmega.SetSampleTime(50);
-  regulatorNavigationOmega.SetOutputLimits(-3, 3);
+  regulatorNavigationOmega.SetOutputLimits(-1, 1);
+
+  regulatorObstacleBoundaryFollowOmega.SetMode(AUTOMATIC);
+  regulatorObstacleBoundaryFollowOmega.SetSampleTime(50);
+  regulatorObstacleBoundaryFollowOmega.SetOutputLimits(-1, 1);
 
   regulatorObstacleAvoidanceOmega.SetMode(AUTOMATIC);
   regulatorObstacleAvoidanceOmega.SetSampleTime(50);
-  regulatorObstacleAvoidanceOmega.SetOutputLimits(-6, 6);
+  regulatorObstacleAvoidanceOmega.SetOutputLimits(-1, 1);
 
   // keep values between 0 and TWO_PI for accurate
   // desired theta calculations

@@ -5,56 +5,73 @@
 */
 
 #include "robot/robot.h"
+#include "utils/utils.h"
+#include "globals.h"
 
-int wallFollowProgramStep = 0;
-int wallFollowProgramStepCount = -1;
+float thetaDesiredObstacleBoundaryFollow = 0;
+bool lastflagObstacleBoundaryFollow = false;
+bool turnLeftBoundaryFollow = false;
+
+void obstacleBoundaryFollowBegin () {
+  float x = robot.getX();
+  float y = robot.getY();
+  WaypointSet waypointSet = robot.getWaypointSet();
+  float thetaDesiredNavigation = waypointSet.getThetaDesired(x, y);
+  turnLeftBoundaryFollow = (thetaDesiredNavigation < 0);
+}
+
+void obstacleBoundaryFollowEnd () {
+  Serial.println("Obstacle boundary follow system end");
+  thetaDesiredObstacleBoundaryFollow = 0;
+}
+
 void Robot::stepObstacleBoundaryFollow() {
-  int enterDistance = 24;
-  int exitDistance = 36;
+  float distanceThresholdDanger = 12;
+  float distanceThresholdEnter = 18;
+  float distanceThresholdExit = 24;
 
-  int distanceLeft = sensorLeft.getPreviousRead();
-  int distanceRight = sensorRight.getPreviousRead();
-  int distanceForward = sensorForward.getPreviousRead();
+  float distanceLeftLeft = sensorLeftLeft.getPreviousRead();
+  float distanceLeft = sensorLeft.getPreviousRead();
+  float distanceForward = sensorForward.getPreviousRead();
+  float distanceRight = sensorRight.getPreviousRead();
+  float distanceRightRight = sensorRightRight.getPreviousRead();
 
-  float thetaDesired = waypointSet.getThetaDesired(x, y);
+  float distanceLeast = distanceLeftLeft;
+  if (distanceLeast > distanceLeft) distanceLeast = distanceLeft;
+  if (distanceLeast > distanceForward) distanceLeast = distanceForward;
+  if (distanceLeast > distanceRight) distanceLeast = distanceRight;
+  if (distanceLeast > distanceRightRight) distanceLeast = distanceRightRight;
 
-  if (abs(thetaDesired - theta) > PI) {
-    if (distanceLeft < enterDistance) {
-      flagObstacleBoundaryFollow = true;
-      wallFollowProgramStep = 1;
-      wallFollowProgramStepCount = -1;
-    } else if (distanceRight < enterDistance) {
-      flagObstacleBoundaryFollow = true;
-      wallFollowProgramStep = 1;
-      wallFollowProgramStepCount = -1;
-    }
+  if (flagObstacleBoundaryFollow == true && lastflagObstacleBoundaryFollow == false) {
+    obstacleBoundaryFollowBegin();
+    thetaDesiredObstacleBoundaryFollow = getThetaDesiredObstacleBoundaryFollow(turnLeftBoundaryFollow);
+    Serial.print("Obstacle boundary follow system begin: ");
+    Serial.println(thetaDesiredObstacleBoundaryFollow);
+  } else if (flagObstacleBoundaryFollow == false && lastflagObstacleBoundaryFollow == true) {
+    obstacleBoundaryFollowEnd();
   }
 
   if (flagObstacleBoundaryFollow == true) {
-    if (wallFollowProgramStep == 1) {
-      if (distanceLeft < enterDistance / 2) {
-        float omega = PI / 2;
-        targetVelocityLeft = (2*velocitySlow + omega*wheelAxelLength)/(2*wheelRadius);
-        targetVelocityRight = (2*velocitySlow - omega*wheelAxelLength)/(2*wheelRadius);
-      } else if (distanceLeft >= enterDistance / 2) {
-        wallFollowProgramStep = 2;
-      } else if (distanceRight < enterDistance / 2) {
-        float omega = -PI / 2;
-        targetVelocityLeft = (2*velocitySlow + omega*wheelAxelLength)/(2*wheelRadius);
-        targetVelocityRight = (2*velocitySlow - omega*wheelAxelLength)/(2*wheelRadius);
-      } else if (distanceRight >= enterDistance / 2) {
-        wallFollowProgramStep = 2;
-      }
-    } else if (wallFollowProgramStep == 2) {
-      wallFollowProgramStepCount++;
-      targetVelocityLeft = velocitySlow;
-      targetVelocityRight = velocitySlow;
+    thetaDesiredObstacleBoundaryFollow = getThetaDesiredObstacleBoundaryFollow(turnLeftBoundaryFollow);
 
-      if (wallFollowProgramStepCount >= 20) {
-        flagObstacleBoundaryFollow = false;
-        wallFollowProgramStep = 0;
-        wallFollowProgramStepCount = -1;
-      }
+    float velocity = velocitySlow;
+    float omega = regulatorObstacleBoundaryFollowOmega.Compute(theta, thetaDesiredObstacleBoundaryFollow);
+
+    if (distanceLeast <= distanceThresholdEnter) {
+      float distanceLeastForward = distanceLeft;
+      if (distanceLeastForward > distanceForward) distanceLeastForward = distanceForward;
+      if (distanceLeastForward > distanceRight) distanceLeastForward = distanceRight;
+      // set velocity close to zero as approach danger, negative if below danger
+      // velocity *= (distanceLeastForward - distanceThresholdDanger) / (distanceThresholdEnter - distanceThresholdDanger);
+      // if (distanceLeastForward - distanceThresholdDanger < 0) velocity *= 3;
+      if (distanceLeastForward - distanceThresholdDanger < 0) velocity *= -1;
     }
+
+    targetVelocityLeft = (2*velocity + omega*wheelAxelLength)/(2*wheelRadius);
+    targetVelocityRight = (2*velocity - omega*wheelAxelLength)/(2*wheelRadius);
+  } else {
+    regulatorObstacleBoundaryFollowOmega.Compute(0, 0);
   }
+
+  lastflagObstacleBoundaryFollow = flagObstacleBoundaryFollow;
 }

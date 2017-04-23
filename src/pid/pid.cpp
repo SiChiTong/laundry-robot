@@ -40,10 +40,16 @@ double PID::Compute(double input, double setpoint) {
     lastInput = input;
     lastTime = now;
 
+    previousValue = output;
     return output;
   } else {
+    previousValue = 0;
     return 0;
   }
+}
+
+double PID::GetPreviousValue() {
+  return previousValue;
 }
 
 void PID::SetTunings(double Kp, double Ki, double Kd) {

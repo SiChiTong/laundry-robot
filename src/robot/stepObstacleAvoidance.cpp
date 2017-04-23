@@ -1,6 +1,5 @@
 #include "robot/robot.h"
 #include "utils/utils.h"
-#include "robot/getThetaDesiredAvoidObstacle.h"
 
 float thetaDesired = 0;
 int countObstacleAvoidance = 0;
@@ -26,8 +25,7 @@ void Robot::stepObstacleAvoidance() {
   if (flagObstacleAvoidance == true && lastFlagObstacleAvoidance == false) {
     // begin obstacle avoidance subsystem
     countObstacleAvoidance = 0;
-    thetaDesired = getThetaDesiredAvoidObstacle(theta, distanceThresholdEnter, \
-      sensorLeftLeft, sensorLeft, sensorForward, sensorRight, sensorRightRight);
+    thetaDesired = getThetaDesiredAvoidObstacle(distanceThresholdEnter);
     turnLeft = thetaDesired < 0;
 
     Serial.print("Obstacle avoidance system begin: ");
@@ -45,8 +43,7 @@ void Robot::stepObstacleAvoidance() {
   }
 
   if (flagObstacleAvoidance == true) {
-    thetaDesired = getThetaDesiredAvoidObstacle(theta, distanceThresholdEnter, \
-      sensorLeftLeft, sensorLeft, sensorForward, sensorRight, sensorRightRight);
+    thetaDesired = getThetaDesiredAvoidObstacle(distanceThresholdEnter);
 
     // keep turning in one direction
     // if (turnLeft == false && thetaDesired < 0) thetaDesired += TWO_PI;

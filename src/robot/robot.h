@@ -39,7 +39,13 @@ class Robot {
     bool flagBumper = false;
     bool flagRemote = false;
 
+    // theta calculations
+    float getThetaDesiredNavigation();
+    float getThetaDesiredObstacleBoundaryFollow(bool);
+    float getThetaDesiredAvoidObstacle(float);
+
     // set flags
+    void setFlagObstacleBoundaryFollow();
     void setFlagObstacleAvoidance();
 
     // step subsystems
@@ -61,20 +67,24 @@ class Robot {
     Motor motorRight = Motor(3, 23, 22);
 
     // PID Regulators
-    PID regulatorMotorLeft = PID(7, 5, 1, DIRECT);
-    PID regulatorMotorRight = PID(7, 5, 1, DIRECT);
+    PID regulatorMotorLeft = PID(20, 5, 1, DIRECT);
+    PID regulatorMotorRight = PID(20, 5, 1, DIRECT);
     PID regulatorNavigationOmega = PID(5, 1, 0.7, DIRECT);
+    PID regulatorObstacleBoundaryFollowOmega = PID(3, 1, 1, DIRECT);
     PID regulatorObstacleAvoidanceOmega = PID(3, 1, 1, DIRECT);
 
     // velocities (ticks per 50 ms)
     float velocityFast = 20;
     float velocityModerate = 15;
-    float velocitySlow = 5;
+    float velocitySlow = 1;
 
     // instance functions
     void setUp();
     void step();
     void printStats();
+    float getX();
+    float getY();
+    WaypointSet getWaypointSet();
 
     // wheel encoder handlers. these have to be static :(
     static void handleEncoderTickLeft();

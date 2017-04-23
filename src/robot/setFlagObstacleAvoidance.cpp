@@ -12,27 +12,11 @@ void Robot::setFlagObstacleAvoidance() {
   float distanceRight = sensorRight.getPreviousRead();
   float distanceRightRight = sensorRightRight.getPreviousRead();
 
-  int sensorId = 0;
   float distanceLeast = distanceLeftLeft;
-  if (distanceLeast > distanceLeft) {
-    distanceLeast = distanceLeft;
-    sensorId = 1;
-  }
-
-  if (distanceLeast > distanceForward) {
-    distanceLeast = distanceForward;
-    sensorId = 2;
-  }
-
-  if (distanceLeast > distanceRight) {
-    distanceLeast = distanceRight;
-    sensorId = 3;
-  }
-
-  if (distanceLeast > distanceRightRight) {
-    distanceLeast = distanceRightRight;
-    sensorId = 4;
-  }
+  if (distanceLeast > distanceLeft) distanceLeast = distanceLeft;
+  if (distanceLeast > distanceForward) distanceLeast = distanceForward;
+  if (distanceLeast > distanceRight) distanceLeast = distanceRight;
+  if (distanceLeast > distanceRightRight) distanceLeast = distanceRightRight;
 
   if (flagObstacleAvoidance == false) {
     flagObstacleAvoidance = distanceLeast <= distanceThresholdEnter;

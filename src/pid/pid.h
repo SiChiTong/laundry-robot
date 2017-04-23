@@ -12,6 +12,7 @@ class PID {
     PID(double, double, double, int);
     void SetMode(int Mode);
     double Compute(double, double);
+    double GetPreviousValue();
     void SetVariables(double*, double*, double*);
     void SetOutputLimits(double, double);
     void SetTunings(double, double, double);
@@ -34,6 +35,7 @@ class PID {
     double ki;
     double kd;
 
+    double previousValue;
     int controllerDirection;
 
     double *myInput;

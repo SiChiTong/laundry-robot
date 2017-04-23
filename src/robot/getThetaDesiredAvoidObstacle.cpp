@@ -1,15 +1,15 @@
 #include "robot/robot.h"
 #include "utils/utils.h"
 
-static float getThetaDesiredAvoidObstacle(float _robotTheta, float enterDistance, SensorUltrasonic sensorLeftLeft, SensorUltrasonic sensorLeft, SensorUltrasonic sensorForward, SensorUltrasonic sensorRight, SensorUltrasonic sensorRightRight) {
-  float robotTheta = _robotTheta;
+float Robot::getThetaDesiredAvoidObstacle(float enterDistance) {
+  float robotTheta = theta;
   if (robotTheta < 0) {
     robotTheta += TWO_PI;
   }
 
   // create vectors {{ magnitude, direction }}
-  int sensorCount = 5;
-  float vectors[sensorCount][2] = {{0,0},{0,0},{0,0},{0,0},{0,0}};
+  int sensorCount = 8;
+  float vectors[sensorCount][2] = {{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
   vectors[0][0] = sensorLeftLeft.getPreviousRead();
   vectors[0][1] = robotTheta + sensorLeftLeft.theta + PI;
   vectors[1][0] = sensorLeft.getPreviousRead();
@@ -20,6 +20,14 @@ static float getThetaDesiredAvoidObstacle(float _robotTheta, float enterDistance
   vectors[3][1] = robotTheta + sensorRight.theta + PI;
   vectors[4][0] = sensorRightRight.getPreviousRead();
   vectors[4][1] = robotTheta + sensorRightRight.theta + PI;
+
+  // ghost vectors - they always vote to turn around
+  vectors[5][0] = 156;
+  vectors[5][1] = robotTheta + (-PI * 3 / 4) + PI;
+  vectors[6][0] = 156;
+  vectors[6][1] = robotTheta + (PI * 3 / 4) + PI;
+  vectors[7][0] = 156;
+  vectors[7][1] = robotTheta + (-PI) + PI;
 
   float xSum = 0;
   float ySum = 0;

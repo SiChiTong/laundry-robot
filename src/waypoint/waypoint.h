@@ -7,7 +7,7 @@ class Waypoint {
   private:
     float x = 0;
     float y = 0;
-    float threshold = 3;
+    float threshold = 6;
 
   public:
     float getX();

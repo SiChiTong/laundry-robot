@@ -9,13 +9,17 @@ void Robot::step() {
   targetVelocityRight = 0;
 
   // set flags
+  setFlagObstacleBoundaryFollow();
   setFlagObstacleAvoidance();
+
+  // targetVelocityLeft = velocitySlow;
+  // targetVelocityRight = velocitySlow;
 
   // step subsystems
   if (navigationComplete == false) {
     stepNavigation();
-    // stepObstacleBoundaryFollow();
-    stepObstacleAvoidance();
+    stepObstacleBoundaryFollow();
+    // stepObstacleAvoidance();
     // stepBumpers();
   }
 
