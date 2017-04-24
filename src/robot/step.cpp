@@ -12,14 +12,11 @@ void Robot::step() {
   setFlagObstacleBoundaryFollow();
   setFlagObstacleAvoidance();
 
-  // targetVelocityLeft = velocitySlow;
-  // targetVelocityRight = velocitySlow;
-
   // step subsystems
   if (navigationComplete == false) {
     stepNavigation();
     stepObstacleBoundaryFollow();
-    // stepObstacleAvoidance();
+    stepObstacleAvoidance();
     // stepBumpers();
   }
 
@@ -28,7 +25,6 @@ void Robot::step() {
   stepMotors();
 
   updateOdometry();
-  updateThetaDesired();
 
   delay(50);
 }

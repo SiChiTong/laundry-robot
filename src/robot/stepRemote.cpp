@@ -92,8 +92,6 @@ void Robot::stepRemote() {
   if (autonomousMode == false) {
     regulatorMotorLeft.Compute(0, 0);
     regulatorMotorRight.Compute(0, 0);
-    regulatorNavigationOmega.Compute(0, 0);
-    regulatorObstacleAvoidanceOmega.Compute(0, 0);
   }
 
   if (autonomousMode == false && manualStepCount < 3) {

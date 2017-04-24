@@ -1,4 +1,5 @@
 #include "robot/robot.h"
+#include "utils/utils.h"
 
 void Robot::updateOdometry() {
   int ticksPerRevolution = 192;
@@ -17,7 +18,5 @@ void Robot::updateOdometry() {
   y = y + distanceCenter * cos(theta);
   theta -= (distanceRight - distanceLeft) / wheelAxelLength;
 
-  // keep theta between -180 degrees and +180 degrees (makes error calculations much easier)
-  if (theta < -TWO_PI * 2) theta += TWO_PI;
-  else if (theta > TWO_PI * 2) theta -= TWO_PI;
+  theta = constrainAngle(theta);
 }

@@ -2,10 +2,10 @@
 #include "waypointSet/waypointSet.h"
 
 WaypointSet::WaypointSet() {
-  waypoints[0] = Waypoint(-2*12, 5*12);
-  waypoints[1] = Waypoint(-2*12, 5*12);
-  waypoints[2] = Waypoint(-2*12, 5*12);
-  waypoints[3] = Waypoint(-2*12, 5*12);
+  waypoints[0] = Waypoint(-3*12, 5*12);
+  waypoints[1] = Waypoint(-3*12, 5*12);
+  waypoints[2] = Waypoint(-3*12, 5*12);
+  waypoints[3] = Waypoint(-3*12, 5*12);
 }
 
 WaypointSet::~WaypointSet() {

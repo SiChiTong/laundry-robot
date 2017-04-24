@@ -3,6 +3,7 @@
 int bumperProgramStep = 0;
 int bumperProgramStepCount = -1;
 void Robot::stepBumpers() {
+  /*
   int distanceLeft = sensorLeft.getPreviousRead();
   int distanceRight = sensorRight.getPreviousRead();
   int distanceForward = sensorForward.getPreviousRead();
@@ -46,4 +47,5 @@ void Robot::stepBumpers() {
       }
     }
   }
+  */
 }

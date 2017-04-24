@@ -1,4 +1,5 @@
 #include "robot/robot.h"
+#include "utils/utils.h"
 
 void Robot::stepNavigation() {
   bool done = waypointSet.isComplete(x, y);
@@ -11,21 +12,9 @@ void Robot::stepNavigation() {
     targetVelocityLeft = 0;
     targetVelocityRight = 0;
   } else {
-    float velocity = velocitySlow;
-    float thetaDesired = waypointSet.getThetaDesired(x, y);
-    float errorTheta = thetaDesired - theta;
-    float errorDistance = waypointSet.getErrorDistance(x, y);
-    float omega = regulatorNavigationOmega.Compute(theta, thetaDesired);
-
-    if (abs(errorTheta) > PI) {
-      velocity = 0;
-      omega /= 4;
-    } else if (abs(errorTheta) > PI / 2) {
-      velocity /= 4;
-      omega /= 1;
-    } else if (errorDistance < 24) {
-      velocity /= 2;
-    }
+    thetaDesired = waypointSet.getThetaDesired(x, y);
+    velocity = transformVelocity(theta, thetaDesired);
+    omega = transformOmega(theta, thetaDesired);
 
     targetVelocityLeft = (2*velocity + omega*wheelAxelLength)/(2*wheelRadius);
     targetVelocityRight = (2*velocity - omega*wheelAxelLength)/(2*wheelRadius);

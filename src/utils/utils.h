@@ -3,5 +3,7 @@
 
 #include <Arduino.h>
 #include "utils/constrainAngle.h"
+#include "utils/transformOmega.h"
+#include "utils/transformVelocity.h"
 
 #endif

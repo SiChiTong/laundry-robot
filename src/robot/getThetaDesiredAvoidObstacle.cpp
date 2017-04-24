@@ -3,13 +3,10 @@
 
 float Robot::getThetaDesiredAvoidObstacle(float enterDistance) {
   float robotTheta = theta;
-  if (robotTheta < 0) {
-    robotTheta += TWO_PI;
-  }
 
-  // create vectors {{ magnitude, direction }}
+  // create vectors {{ magnitude, direction, weight }}
   int sensorCount = 8;
-  float vectors[sensorCount][2] = {{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};
+  float vectors[sensorCount][2];
   vectors[0][0] = sensorLeftLeft.getPreviousRead();
   vectors[0][1] = robotTheta + sensorLeftLeft.theta + PI;
   vectors[1][0] = sensorLeft.getPreviousRead();
@@ -40,7 +37,7 @@ float Robot::getThetaDesiredAvoidObstacle(float enterDistance) {
       vectors[i][1] -= PI;
     }
 
-    // set magnitude as inverse
+    // set magnitude as inverse distance times weight
     vectors[i][0] = 1.0 / vectors[i][0];
 
     // compute x y coordinates for vectors
@@ -48,5 +45,11 @@ float Robot::getThetaDesiredAvoidObstacle(float enterDistance) {
     ySum += vectors[i][0] * sin(vectors[i][1]);
   }
 
+  // epsilon values throw off atan2
+  float epsilon = 0.01;
+  if (xSum < epsilon && xSum > -epsilon) xSum = 0;
+  if (ySum < epsilon && ySum > -epsilon) ySum = 0;
+
+  // go forward if no objects
   return atan2(ySum, xSum);
 }

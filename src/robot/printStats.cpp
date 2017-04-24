@@ -7,6 +7,20 @@ void Robot::printStats() {
   Serial.print("y, ");
   Serial.print(theta);
   Serial.print("t, ");
+  Serial.print(thetaDesired);
+  Serial.print("td, ");
+  Serial.print(velocity);
+  Serial.print("v, ");
+  Serial.print(omega);
+  Serial.print("o, ");
+  Serial.print(targetVelocityLeft);
+  Serial.print("tvl, ");
+  Serial.print(targetVelocityRight);
+  Serial.print("tvr, ");
+  Serial.print(regulatorMotorLeft.GetPreviousValue());
+  Serial.print("pl, ");
+  Serial.print(regulatorMotorRight.GetPreviousValue());
+  Serial.print("pr, ");
   Serial.print(sensorLeftLeft.getPreviousRead());
   Serial.print("s1, ");
   Serial.print(sensorLeft.getPreviousRead());
@@ -16,15 +30,5 @@ void Robot::printStats() {
   Serial.print(sensorRight.getPreviousRead());
   Serial.print("s4, ");
   Serial.print(sensorRightRight.getPreviousRead());
-  Serial.print("s5, ");
-  Serial.print(regulatorMotorLeft.GetPreviousValue());
-  Serial.print("pl, ");
-  Serial.print(regulatorMotorRight.GetPreviousValue());
-  Serial.print("pr, ");
-  Serial.print(regulatorNavigationOmega.GetPreviousValue());
-  Serial.print("pn, ");
-  Serial.print(regulatorObstacleBoundaryFollowOmega.GetPreviousValue());
-  Serial.print("pfw, ");
-  Serial.print(regulatorObstacleAvoidanceOmega.GetPreviousValue());
-  Serial.println("pao");
+  Serial.println("s5");
 }

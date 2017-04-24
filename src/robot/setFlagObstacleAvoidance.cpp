@@ -2,9 +2,8 @@
 #include "utils/utils.h"
 
 void Robot::setFlagObstacleAvoidance() {
-  int distanceThresholdDanger = 12;
-  int distanceThresholdEnter = 18;
-  int distanceThresholdExit = 24;
+  int distanceThresholdEnter = 6;
+  int distanceThresholdExit = 12;
 
   float distanceLeftLeft = sensorLeftLeft.getPreviousRead();
   float distanceLeft = sensorLeft.getPreviousRead();

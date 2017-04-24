@@ -11,12 +11,15 @@
 class Robot {
   private:
     // actual velocity (ticks per 50 ms)
+    double velocity = 0;
+    double omega = 0;
     double velocityLeft = 0;
     double velocityRight = 0;
 
     // target velocities of motors (ticks per 50 ms)
     double targetVelocityLeft = 0;
     double targetVelocityRight = 0;
+    double thetaDesired = 0;
 
     // current position of robot
     float x = 0;
@@ -38,6 +41,7 @@ class Robot {
     bool flagObstacleAvoidance = false;
     bool flagBumper = false;
     bool flagRemote = false;
+    bool isObstacleDetected(float);
 
     // theta calculations
     float getThetaDesiredNavigation();
@@ -67,16 +71,8 @@ class Robot {
     Motor motorRight = Motor(3, 23, 22);
 
     // PID Regulators
-    PID regulatorMotorLeft = PID(20, 5, 1, DIRECT);
-    PID regulatorMotorRight = PID(20, 5, 1, DIRECT);
-    PID regulatorNavigationOmega = PID(5, 1, 0.7, DIRECT);
-    PID regulatorObstacleBoundaryFollowOmega = PID(3, 1, 1, DIRECT);
-    PID regulatorObstacleAvoidanceOmega = PID(3, 1, 1, DIRECT);
-
-    // velocities (ticks per 50 ms)
-    float velocityFast = 20;
-    float velocityModerate = 15;
-    float velocitySlow = 1;
+    PID regulatorMotorLeft = PID(10, 0, 10, DIRECT);
+    PID regulatorMotorRight = PID(10, 0, 10, DIRECT);
 
     // instance functions
     void setUp();

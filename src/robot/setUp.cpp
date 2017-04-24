@@ -6,23 +6,11 @@ void Robot::setUp() {
 
   regulatorMotorLeft.SetMode(AUTOMATIC);
   regulatorMotorLeft.SetSampleTime(50);
-  regulatorMotorLeft.SetOutputLimits(-100, 100);
+  regulatorMotorLeft.SetOutputLimits(-10, 10);
 
   regulatorMotorRight.SetMode(AUTOMATIC);
   regulatorMotorRight.SetSampleTime(50);
-  regulatorMotorRight.SetOutputLimits(-100, 100);
-
-  regulatorNavigationOmega.SetMode(AUTOMATIC);
-  regulatorNavigationOmega.SetSampleTime(50);
-  regulatorNavigationOmega.SetOutputLimits(-1, 1);
-
-  regulatorObstacleBoundaryFollowOmega.SetMode(AUTOMATIC);
-  regulatorObstacleBoundaryFollowOmega.SetSampleTime(50);
-  regulatorObstacleBoundaryFollowOmega.SetOutputLimits(-1, 1);
-
-  regulatorObstacleAvoidanceOmega.SetMode(AUTOMATIC);
-  regulatorObstacleAvoidanceOmega.SetSampleTime(50);
-  regulatorObstacleAvoidanceOmega.SetOutputLimits(-1, 1);
+  regulatorMotorRight.SetOutputLimits(-10, 10);
 
   // keep values between 0 and TWO_PI for accurate
   // desired theta calculations

@@ -6,14 +6,14 @@ void Robot::stepMotors() {
       motorLeft.stop();
     } else {
       float motorPwmLeft = regulatorMotorLeft.Compute(velocityLeft, targetVelocityLeft);
-      motorLeft.step(motorPwmLeft);
+      motorLeft.step(motorPwmLeft * 10.0);
     }
 
     if (targetVelocityRight == 0) {
       motorRight.stop();
     } else {
       float motorPwmRight = regulatorMotorRight.Compute(velocityRight, targetVelocityRight);
-      motorRight.step(motorPwmRight);
+      motorRight.step(motorPwmRight * 10.0);
     }
   }
 }
