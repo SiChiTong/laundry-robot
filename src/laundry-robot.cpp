@@ -15,4 +15,8 @@ void loop() {
     robot.step();
   }
   robot.printStats();
+
+  // robot.motorLeft.step(0);
+  // robot.motorRight.step(0);
+  // delay(10000);
 }

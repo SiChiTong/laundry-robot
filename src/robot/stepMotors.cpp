@@ -1,7 +1,7 @@
 #include "robot/robot.h"
 
 void Robot::stepMotors() {
-  if (autonomousMode == true) {
+  if (flag != FLAG_REMOTE) {
     if (targetVelocityLeft == 0) {
       motorLeft.stop();
     } else {

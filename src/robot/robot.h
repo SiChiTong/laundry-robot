@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "IRremote.h"
+#include "robot/flags.h"
 #include "pid/pid.h"
 #include "motor/motor.h"
 #include "sensorUltrasonic/sensorUltrasonic.h"
@@ -27,30 +28,28 @@ class Robot {
     double theta = 0; // angle of robot (in radians)
 
     WaypointSet waypointSet = WaypointSet();
-    bool autonomousMode = false;
 
     // robot measurements
     float wheelRadius = 2.83465; // inches
     float wheelAxelLength = 16; // inches
 
+    // private instance methods
+    void setTargetVelocitiesWheels(float, float);
     void readSensors();
-
-    // subsystem flags
-    bool navigationComplete = false;
-    bool flagObstacleBoundaryFollow = false;
-    bool flagObstacleAvoidance = false;
-    bool flagBumper = false;
-    bool flagRemote = false;
-    bool isObstacleDetected(float);
 
     // theta calculations
     float getThetaDesiredNavigation();
     float getThetaDesiredObstacleBoundaryFollow(bool);
     float getThetaDesiredAvoidObstacle(float);
 
-    // set flags
-    void setFlagObstacleBoundaryFollow();
+    // flags
+    int flag = FLAG_REMOTE;
+    void setFlagRemote();
     void setFlagObstacleAvoidance();
+    void setFlagObstacleBoundaryFollow();
+    void setFlagNavigation();
+    void resetFlag();
+    void requestFlagChange(int);
 
     // step subsystems
     void stepNavigation();
@@ -81,6 +80,7 @@ class Robot {
     float getX();
     float getY();
     WaypointSet getWaypointSet();
+    bool isObstacleDetected(float);
 
     // wheel encoder handlers. these have to be static :(
     static void handleEncoderTickLeft();

@@ -1,6 +1,8 @@
 #include "robot/robot.h"
 
 void Robot::printStats() {
+  Serial.print(flag);
+  Serial.print(", ");
   Serial.print(x);
   Serial.print("x, ");
   Serial.print(y);

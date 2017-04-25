@@ -2,6 +2,9 @@
 #include "utils/utils.h"
 
 void Robot::setFlagObstacleAvoidance() {
+  bool flagObstacleAvoidance = (flag == FLAG_AVOID_OBSTACLE);
+  bool lastFlagObstacleAvoidance = flagObstacleAvoidance;
+
   int distanceThresholdEnter = 6;
   int distanceThresholdExit = 12;
 
@@ -21,5 +24,12 @@ void Robot::setFlagObstacleAvoidance() {
     flagObstacleAvoidance = distanceLeast <= distanceThresholdEnter;
   } else {
     flagObstacleAvoidance = distanceLeast < distanceThresholdExit;
+  }
+
+  // set flag or release flag
+  if (flagObstacleAvoidance == true) {
+    requestFlagChange(FLAG_AVOID_OBSTACLE);
+  } else if (lastFlagObstacleAvoidance == true && flag == FLAG_AVOID_OBSTACLE) {
+    resetFlag();
   }
 }

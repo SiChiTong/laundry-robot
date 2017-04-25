@@ -1,40 +1,43 @@
 #include "robot/robot.h"
 
-decode_results results;
-int manualStepCount = 0;
-float manualPwmLeft = 0;
-float manualPwmRight = 0;
+static decode_results results;
+static int manualStepCount = 0;
+static float manualPwmLeft = 0;
+static float manualPwmRight = 0;
 float manualPwm = 85;
+bool flagRemote = false;
+bool lastFlagRemote = false;
+
 void Robot::stepRemote() {
   if (sensorIR.decode(&results)) {
     switch(results.value) {
       case 0xFF02FD: // ok -> stop
         Serial.println("STOP");
-        autonomousMode = false;
+        flagRemote = true;
         manualStepCount = 0;
         manualPwmLeft = 0;
         manualPwmRight = 0;
         break;
       case 0xFF629D: // forward
-        autonomousMode = false;
+        flagRemote = true;
         manualStepCount = 0;
         manualPwmLeft = manualPwm;
         manualPwmRight = manualPwm;
         break;
       case 0xFF22DD: // left
-        autonomousMode = false;
+        flagRemote = true;
         manualStepCount = 0;
         manualPwmLeft = -manualPwm;
         manualPwmRight = manualPwm;
         break;
       case 0xFFC23D: // right
-        autonomousMode = false;
+        flagRemote = true;
         manualStepCount = 0;
         manualPwmLeft = manualPwm;
         manualPwmRight = -manualPwm;
         break;
       case 0xFFA857: // reverse
-        autonomousMode = false;
+        flagRemote = true;
         manualStepCount = 0;
         manualPwmLeft = -manualPwm;
         manualPwmRight = -manualPwm;
@@ -63,20 +66,12 @@ void Robot::stepRemote() {
         y = 0;
         theta = 0;
         waypointSet.reset();
-        autonomousMode = false;
+        flagRemote = true;
         manualStepCount = 3;
-        flagObstacleAvoidance = false;
-        navigationComplete = false;
         Serial.println("Reset navigation and odometry");
         break;
       case 0xFF42BD: // * -> toggle autonomous/manual mode
-        if (autonomousMode == false ) {
-          autonomousMode = true;
-          Serial.println("Switched to autonomous mode");
-        } else {
-          autonomousMode = false;
-          Serial.println("Switched to manual mode");
-        }
+        flagRemote = !flagRemote;
         break;
       case 0xFFFFFFFF: // repeat previous command
         manualStepCount = 0;
@@ -89,21 +84,33 @@ void Robot::stepRemote() {
     sensorIR.resume();
   }
 
-  if (autonomousMode == false) {
+  if (flagRemote == true) {
     regulatorMotorLeft.Compute(0, 0);
     regulatorMotorRight.Compute(0, 0);
   }
 
-  if (autonomousMode == false && manualStepCount < 3) {
+  if (flagRemote == true && manualStepCount < 3) {
     manualStepCount++;
     flagRemote = true;
     motorLeft.step(manualPwmLeft);
     motorRight.step(manualPwmRight);
-  } else if (autonomousMode == false) {
+  } else if (flagRemote == true) {
     flagRemote = true;
     motorLeft.step(0);
     motorRight.step(0);
   } else {
     flagRemote = false;
   }
+
+  bool flagSet = (!lastFlagRemote && flagRemote);
+  bool flagRemove = (lastFlagRemote && !flagRemote);
+
+  // set flag or release flag
+  if (flagSet) {
+    requestFlagChange(FLAG_REMOTE);
+  } else if (flagRemove) {
+    resetFlag();
+  }
+
+  lastFlagRemote = flagRemote;
 }
