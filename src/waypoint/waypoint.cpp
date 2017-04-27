@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "waypoint/waypoint.h"
+#include "utils/utils.h"
 
 Waypoint::Waypoint() {
 
@@ -29,7 +30,7 @@ float Waypoint::getY() {
 float Waypoint::getThetaDesired(float agentX, float agentY) {
   float errorX = x - agentX;
   float errorY = y - agentY;
-  return PI/2 - atan2(errorY, errorX);
+  return constrainAngle(PI/2 - atan2(errorY, errorX));
 }
 
 float Waypoint::getErrorDistance(float agentX, float agentY) {

@@ -5,7 +5,7 @@ static float transformOmega (float thetaCurrent, float thetaDesired) {
   float velocityPlanned = 1;
   float u1 = velocityPlanned * cos(thetaDesired); // desired velocity in x direction
   float u2 = velocityPlanned * sin(thetaDesired); // desired velocity in y direction
-  float l = 8; // distance between x,y tilde and x,y
+  float l = 12; // distance between x,y tilde and x,y
   float phi = thetaCurrent; // robot's theta
 
   // matrix multiplication of 1/l identiy matrix, inverse rotation matrix, and u1, u2 matrix

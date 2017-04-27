@@ -10,6 +10,6 @@ void Robot::stepObstacleBoundaryFollow() {
     thetaDesired = getThetaDesiredObstacleBoundaryFollow(followRightWall);
     velocity = transformVelocity(theta, thetaDesired);
     omega = transformOmega(theta, thetaDesired);
-    setTargetVelocitiesWheels(velocity, omega);
+    setTargetVelocitiesWheels();
   }
 }

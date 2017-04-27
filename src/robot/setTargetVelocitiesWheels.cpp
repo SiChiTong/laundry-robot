@@ -1,20 +1,19 @@
 #include "robot/robot.h"
 
-void Robot::setTargetVelocitiesWheels(float velocity, float omega) {
-  float maxTotalVelocity = 1;
-  float sum = velocity + omega;
-  if (sum > maxTotalVelocity || sum < -maxTotalVelocity) {
-    float percentVelocity = velocity / sum;
-    float percentOmega = omega / sum;
+void Robot::setTargetVelocitiesWheels() {
+  float totalVelocity = 1;
 
-    // scale values down to max velocity
-    velocity *= maxTotalVelocity * percentVelocity;
-    omega *= maxTotalVelocity * percentOmega;
+  float sum = abs(velocity) + abs(omega);
+  float percentVelocity = abs(velocity) / sum;
+  float percentOmega = abs(omega) / sum;
 
-    targetVelocityLeft = (2*velocity + omega*wheelAxelLength)/(2*wheelRadius);
-    targetVelocityRight = (2*velocity - omega*wheelAxelLength)/(2*wheelRadius);
-  } else {
-    targetVelocityLeft = (2*velocity + omega*wheelAxelLength)/(2*wheelRadius);
-    targetVelocityRight = (2*velocity - omega*wheelAxelLength)/(2*wheelRadius);
-  }
+  if (velocity < 0) percentVelocity *= -1;
+  if (omega < 0) percentOmega *= -1;
+
+  // scale values down to total velocity
+  float velocityScaled = totalVelocity * percentVelocity;
+  float omegaScaled = totalVelocity * percentOmega;
+
+  targetVelocityLeft = (2*velocityScaled + omegaScaled*wheelAxelLength)/(2*wheelRadius);
+  targetVelocityRight = (2*velocityScaled - omegaScaled*wheelAxelLength)/(2*wheelRadius);
 }

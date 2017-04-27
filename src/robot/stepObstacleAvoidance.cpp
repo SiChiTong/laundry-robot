@@ -6,6 +6,6 @@ void Robot::stepObstacleAvoidance() {
     thetaDesired = getThetaDesiredAvoidObstacle(12);
     velocity = transformVelocity(theta, thetaDesired);
     omega = transformOmega(theta, thetaDesired);
-    setTargetVelocitiesWheels(velocity, omega);
+    setTargetVelocitiesWheels();
   }
 }

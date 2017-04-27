@@ -1,16 +1,17 @@
 #include "utils/utils.h"
 
 static float constrainAngle (float _angle) {
-  float angle = fmod(_angle + PI, TWO_PI);
+  float angle = _angle;
 
-  if (angle < 0) {
-    angle += PI;
-  } else {
-    angle -= PI;
-  }
-
-  if (angle == -PI && _angle > 0) {
-    angle = PI;
+  // loop until angle within -PI and PI
+  while (1) {
+    if (angle < -PI) {
+      angle += TWO_PI;
+    } else if (angle > PI) {
+      angle -= TWO_PI;
+    } else {
+      break;
+    }
   }
 
   return angle;

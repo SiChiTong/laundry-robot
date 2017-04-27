@@ -6,6 +6,6 @@ void Robot::stepNavigation() {
     thetaDesired = waypointSet.getThetaDesired(x, y);
     velocity = transformVelocity(theta, thetaDesired);
     omega = transformOmega(theta, thetaDesired);
-    setTargetVelocitiesWheels(velocity, omega);
+    setTargetVelocitiesWheels();
   }
 }

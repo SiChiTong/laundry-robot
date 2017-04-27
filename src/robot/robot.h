@@ -31,10 +31,10 @@ class Robot {
 
     // robot measurements
     float wheelRadius = 2.83465; // inches
-    float wheelAxelLength = 16; // inches
+    float wheelAxelLength = 17; // inches
 
     // private instance methods
-    void setTargetVelocitiesWheels(float, float);
+    void setTargetVelocitiesWheels();
     void readSensors();
 
     // theta calculations
@@ -70,8 +70,8 @@ class Robot {
     Motor motorRight = Motor(3, 23, 22);
 
     // PID Regulators
-    PID regulatorMotorLeft = PID(10, 0, 10, DIRECT);
-    PID regulatorMotorRight = PID(10, 0, 10, DIRECT);
+    PID regulatorMotorLeft = PID(12, 1, 5, DIRECT);
+    PID regulatorMotorRight = PID(12, 1, 5, DIRECT);
 
     // instance functions
     void setUp();
