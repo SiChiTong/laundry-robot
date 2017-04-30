@@ -11,12 +11,6 @@ void setup() {
 }
 
 void loop() {
-  for (int i = 0; i < 10; i++) {
-    robot.step();
-  }
+  robot.step();
   robot.printStats();
-
-  // robot.motorLeft.step(0);
-  // robot.motorRight.step(0);
-  // delay(10000);
 }

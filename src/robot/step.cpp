@@ -10,14 +10,14 @@ void Robot::step() {
 
   // set flags
   setFlagNavigation();
-  setFlagObstacleBoundaryFollow();
+  // setFlagObstacleBoundaryFollow();
   setFlagObstacleAvoidance();
   setFlagRemote();
 
   // step subsystems
   if (flag != FLAG_SYSTEM_COMPLETE) {
     stepNavigation();
-    stepObstacleBoundaryFollow();
+    // stepObstacleBoundaryFollow();
     stepObstacleAvoidance();
     // stepBumpers();
   }
@@ -26,7 +26,7 @@ void Robot::step() {
   stepRemote();
   stepMotors();
 
-  updateOdometry();
+  updateKinematics();
 
   delay(50);
 }

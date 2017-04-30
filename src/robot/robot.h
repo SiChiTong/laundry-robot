@@ -1,7 +1,12 @@
 #ifndef ROBOT_H
 #define ROBOT_H
 
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BNO055.h>
 #include <Arduino.h>
+#include <utility/imumaths.h>
+#include <Wire.h>
+
 #include "IRremote.h"
 #include "robot/flags.h"
 #include "pid/pid.h"
@@ -60,6 +65,7 @@ class Robot {
     void stepMotors();
 
   public:
+    Adafruit_BNO055 imu = Adafruit_BNO055(55);
     IRrecv sensorIR = IRrecv(11);
     SensorUltrasonic sensorLeftLeft = SensorUltrasonic(45, 44);
     SensorUltrasonic sensorLeft = SensorUltrasonic(53, 52);
@@ -72,6 +78,8 @@ class Robot {
     // PID Regulators
     PID regulatorMotorLeft = PID(12, 1, 5, DIRECT);
     PID regulatorMotorRight = PID(12, 1, 5, DIRECT);
+    // PID regulatorMotorLeft = PID(10, 1, 10, DIRECT);
+    // PID regulatorMotorRight = PID(10, 1, 10, DIRECT);
 
     // instance functions
     void setUp();
@@ -87,8 +95,7 @@ class Robot {
     static void handleEncoderTickRight();
 
     // update stats functions that are called toward end of step()
-    void updateOdometry();
-    void updateThetaDesired();
+    void updateKinematics();
 
     Robot();
     ~Robot();

@@ -4,6 +4,12 @@ void Robot::setUp() {
   attachInterrupt(digitalPinToInterrupt(18), handleEncoderTickLeft, RISING);
   attachInterrupt(digitalPinToInterrupt(19), handleEncoderTickRight, RISING);
 
+  if(!imu.begin()) {
+    Serial.println("Error: BNO055 connection failed.");
+  } else {
+    imu.setExtCrystalUse(true);
+  }
+
   regulatorMotorLeft.SetMode(AUTOMATIC);
   regulatorMotorLeft.SetSampleTime(50);
   regulatorMotorLeft.SetOutputLimits(-10, 10);
